@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   terraform-format-and-validate:
@@ -19,10 +18,10 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
-#used for initialization
+
       - name: Terraform Init
         run: terraform init
-# used for formatting checks
+
       - name: Terraform Format Check
         run: terraform fmt 
 
