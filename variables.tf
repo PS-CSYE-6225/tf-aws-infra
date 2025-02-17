@@ -10,6 +10,25 @@ variable "aws_profile" {
   default     = "demo"
 }
 
+/*variable "aws_accounts" {
+  description = "List of AWS accounts to deploy resources"
+  type        = map(object({
+    profile = string
+    region  = string
+  }))
+  default = {
+    dev = {
+      profile = "dev"
+      region  = "us-east-1"
+    }
+    demo = {
+      profile = "demo"
+      region  = "us-east-1"
+    }
+  }
+}*/
+
+
 variable "vpcs" {
   description = "List of VPC configurations (multiple VPCs support)"
   type = list(object({
