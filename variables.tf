@@ -1,4 +1,5 @@
 
+
 variable "aws_region" {
   description = "AWS Region"
   default     = "us-east-1"
@@ -6,8 +7,8 @@ variable "aws_region" {
 
 variable "aws_profile" {
   description = "AWS CLI profile name"
- // default     = "dev"
-  default     = "demo"
+  default     = "dev"
+  //default     = "demo"
 }
 
 /*variable "aws_accounts" {
@@ -32,28 +33,29 @@ variable "aws_profile" {
 variable "vpcs" {
   description = "List of VPC configurations (multiple VPCs support)"
   type = list(object({
-    name               = string
-    cidr_block         = string
-    public_subnets     = list(string)
-    private_subnets    = list(string)
-    availability_zones = list(string)
+    name            = string
+    cidr_block      = string
+    public_subnets  = list(string)
+    private_subnets = list(string)
   }))
   default = [
     {
-      name               = "MainVPC"
-      cidr_block         = "10.0.0.0/16"
-      public_subnets     = ["10.0.1.0/24", "10.0.3.0/24", "10.0.5.0/24"]
-      private_subnets    = ["10.0.2.0/24", "10.0.4.0/24", "10.0.6.0/24"]
-      availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+      name            = "MainVPC"
+      cidr_block      = "10.0.0.0/16"
+      public_subnets  = ["10.0.1.0/24", "10.0.3.0/24", "10.0.5.0/24"]
+      private_subnets = ["10.0.2.0/24", "10.0.4.0/24", "10.0.6.0/24"]
     },
     /*{
       name               = "SecondaryVPC"
       cidr_block         = "10.1.0.0/16"
       public_subnets     = ["10.1.1.0/24", "10.1.3.0/24", "10.1.5.0/24"]
       private_subnets    = ["10.1.2.0/24", "10.1.4.0/24", "10.1.6.0/24"]
-      availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+      
     }*/
   ]
 }
+
+
+
 
 
