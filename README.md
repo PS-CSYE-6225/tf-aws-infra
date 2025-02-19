@@ -63,8 +63,4 @@ terraform destroy
 ```
 Type `yes` when prompted to confirm.
 
----
-### Notes:
-- Always review the `terraform plan` output before applying changes.
-- Keep your Terraform state file (`terraform.tfstate`) secure.
-- 
+
