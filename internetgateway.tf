@@ -1,10 +1,8 @@
-
-
 resource "aws_internet_gateway" "igws" {
-  count  = length(var.vpcs)
-  vpc_id = aws_vpc.vpcs[count.index].id
+  for_each = aws_vpc.vpcs
 
+  vpc_id = each.value.id
   tags = {
-    Name = "InternetGateway-${count.index + 1}"
+    Name = "${each.key}-InternetGateway"
   }
 }
