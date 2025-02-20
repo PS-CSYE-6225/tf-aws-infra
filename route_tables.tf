@@ -1,8 +1,8 @@
 # Public Route Tables
 resource "aws_route_table" "public_rt" {
-  for_each = aws_vpc.vpcs 
+  for_each = aws_vpc.vpcs
 
-  vpc_id = each.value.id 
+  vpc_id = each.value.id
 
   route {
     cidr_block = "0.0.0.0/0"
