@@ -1,24 +1,27 @@
 # Public Route Tables
 resource "aws_route_table" "public_rt" {
-  count  = length(var.vpcs)
-  vpc_id = aws_vpc.vpcs[count.index].id
+  for_each = aws_vpc.vpcs  # ✅ Correctly iterate over VPCs
+
+  vpc_id = each.value.id  # ✅ Correct way to reference a map
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igws[count.index].id
+    gateway_id = aws_internet_gateway.igws[each.key].id  
   }
 
   tags = {
-    Name = "PublicRouteTable-${count.index + 1}"
+    Name = "${each.key}-PublicRouteTable"
   }
 }
+
 
 # Private Route Tables
 resource "aws_route_table" "private_rt" {
-  count  = length(var.vpcs)
-  vpc_id = aws_vpc.vpcs[count.index].id
+  for_each = aws_vpc.vpcs
 
+  vpc_id = each.value.id  
   tags = {
-    Name = "PrivateRouteTable-${count.index + 1}"
+    Name = "${each.key}-PrivateRouteTable"
   }
 }
+
