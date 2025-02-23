@@ -20,6 +20,9 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
+
+
+
 # Private Subnets
 resource "aws_subnet" "private_subnets" {
   for_each = { for subnet_data in flatten([

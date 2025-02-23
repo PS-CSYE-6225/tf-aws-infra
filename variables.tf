@@ -1,5 +1,3 @@
-
-
 variable "aws_region" {
   description = "AWS Region"
   default     = "us-east-1"
@@ -10,6 +8,39 @@ variable "aws_profile" {
   default     = "dev"
   //default     = "demo"
 }
+
+variable "custom_ami_id" {
+  description = "Custom AMI ID for EC2 Instance"
+  type        = string
+  default     = "ami-0d362e53d202790a0"
+}
+
+variable "instance_type" {
+  description = "Instance Type"
+  type        = string
+  default     = "t2.micro"
+}
+
+variable "key_pair_name" {
+  description = "AWS Key Pair Name for SSH access"
+  type        = string
+  default     = "terraform-key"
+}
+
+
+variable "vpc_cidr" {
+  description = "cidr"
+  type        = string
+  default     = "10.0.0.0/16"
+
+}
+variable "app_port" {
+  description = "Port on which the application runs"
+  type        = number
+  default     = 8080 # ✅ Change this if your app runs on a different port
+}
+
+
 
 /*variable "aws_accounts" {
   description = "List of AWS accounts to deploy resources"
