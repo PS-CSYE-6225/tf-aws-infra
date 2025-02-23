@@ -20,3 +20,4 @@ resource "aws_vpc" "vpcs" {
     Name = each.key
   }
 }
+
