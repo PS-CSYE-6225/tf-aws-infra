@@ -1,8 +1,8 @@
-resource "aws_internet_gateway" "igws" {
-  for_each = aws_vpc.vpcs
+resource "aws_internet_gateway" "igw" {
+  count  = var.vpc_count
+  vpc_id = aws_vpc.main[count.index].id
 
-  vpc_id = each.value.id
   tags = {
-    Name = "${each.key}-InternetGateway"
+    Name = "${var.network_name}-IGW-${count.index + 1}"
   }
 }

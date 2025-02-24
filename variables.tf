@@ -12,7 +12,7 @@ variable "aws_profile" {
 variable "custom_ami_id" {
   description = "Custom AMI ID for EC2 Instance"
   type        = string
-  default     = "ami-0d34e222c10d85de9"
+  default     = "ami-0657a617d8f691cf0"
 }
 
 variable "instance_type" {
@@ -37,10 +37,47 @@ variable "vpc_cidr" {
 variable "app_port" {
   description = "Port on which the application runs"
   type        = number
-  default     = 8080 # ✅ Change this if your app runs on a different port
+  default     = 8080
 }
 
 
+
+
+variable "public_subnets" {
+  description = "List of public subnet CIDR blocks for the first VPC"
+  type        = list(string)
+}
+
+variable "private_subnets" {
+  description = "List of private subnet CIDR blocks for the first VPC"
+  type        = list(string)
+}
+
+variable "second_vpc_cidr" {
+  description = "CIDR block for the second VPC"
+  type        = string
+}
+
+variable "second_public_subnets" {
+  description = "List of public subnet CIDR blocks for the second VPC"
+  type        = list(string)
+}
+
+variable "second_private_subnets" {
+  description = "List of private subnet CIDR blocks for the second VPC"
+  type        = list(string)
+}
+
+variable "network_name" {
+  description = "Unique name for this network deployment"
+  type        = string
+}
+
+variable "vpc_count" {
+  description = "Number of VPCs to create"
+  type        = number
+  default     = 1
+}
 
 /*variable "aws_accounts" {
   description = "List of AWS accounts to deploy resources"
@@ -61,48 +98,7 @@ variable "app_port" {
 }*/
 
 
-variable "vpcs" {
-  description = "List of VPC configurations (multiple VPCs support)"
-  type = list(object({
-    name            = string
-    cidr_block      = string
-    public_subnets  = list(string)
-    private_subnets = list(string)
-  }))
-  default = [
-    {
-      name            = "MainVPC"
-      cidr_block      = "10.0.0.0/16"
-      public_subnets  = ["10.0.1.0/24", "10.0.3.0/24", "10.0.5.0/24"]
-      private_subnets = ["10.0.2.0/24", "10.0.4.0/24", "10.0.6.0/24"]
-    },
-    /*{
-    name            = "SecondaryVPC"
-    cidr_block      = "10.2.0.0/16" 
-    public_subnets  = ["10.2.1.0/24", "10.2.3.0/24", "10.2.5.0/24"]
-    private_subnets = ["10.2.2.0/24", "10.2.4.0/24", "10.2.6.0/24"]
-  },
-  {
-    name            = "3rdVPC"
-    cidr_block      = "10.3.0.0/16"  
-    public_subnets  = ["10.3.1.0/24", "10.3.3.0/24", "10.3.5.0/24"]
-    private_subnets = ["10.3.2.0/24", "10.3.4.0/24", "10.3.6.0/24"]
-  },
-  /*{
-    name            = "4thVPC"
-    cidr_block      = "10.4.0.0/16"  
-    public_subnets  = ["10.4.1.0/24", "10.4.3.0/24", "10.4.5.0/24"]
-    private_subnets = ["10.4.2.0/24", "10.4.4.0/24", "10.4.6.0/24"]
-  },
-  {
-    name            = "5thVPC"
-    cidr_block      = "10.5.0.0/16"  
-    public_subnets  = ["10.5.1.0/24", "10.5.3.0/24", "10.5.5.0/24"]
-    private_subnets = ["10.5.2.0/24", "10.5.4.0/24", "10.5.6.0/24"]
-  }*/
 
-  ]
-}
 
 
 
