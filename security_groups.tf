@@ -1,5 +1,5 @@
 resource "aws_security_group" "application_sec_group" {
-  vpc_id = values(aws_vpc.vpcs)[0].id
+  vpc_id = aws_vpc.main[0].id
   name   = "application-security-group"
 
   # Allow SSH (Port 22) from anywhere
