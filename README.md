@@ -4,7 +4,7 @@
 Before you begin, ensure you have the following installed on your system:
 
 1. **Terraform**: [Download Terraform](https://developer.hashicorp.com/terraform/downloads)
-2. **AWS CLI (if deploying on AWS)**: [Download AWS CLI](https://aws.amazon.com/cli/)
+2. **AnmmnWS CLI (if deploying on AWS)**: [Download AWS CLI](https://aws.amazon.com/cli/)
 3. **Git (for version control)**: [Download Git](https://git-scm.com/downloads)
 4. **Text Editor (e.g., VS Code)**: [Download VS Code](https://code.visualstudio.com/)
 
