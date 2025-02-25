@@ -9,7 +9,7 @@ variable "aws_profile" {
   //default     = "demo"
 }
 
-variable "custom_ami_id" {
+variable "cusjhjhkjtom_ami_id" {
   description = "Custom AMI ID for EC2 Instance"
   type        = string
   default     = "ami-0657a617d8f691cf0"
