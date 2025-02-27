@@ -12,21 +12,21 @@ variable "aws_profile" {
 variable "custom_ami_id" {
   description = "Custom AMI ID for EC2 Instance"
   type        = string
-  
+
 }
 
 variable "instance_type" {
   description = "Instance Type"
   type        = string
-  
+
 }
 
 variable "key_pair_name" {
   description = "AWS Key Pair Name for SSH access"
   type        = string
-  default = "terraform-key"
+  default     = "terraform-key"
   //default="terraform-key-demo"
-  
+
 }
 
 
