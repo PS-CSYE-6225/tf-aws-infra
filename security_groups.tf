@@ -46,3 +46,28 @@ resource "aws_security_group" "application_sec_group" {
     Name = "application-security-group"
   }
 }
+
+# Database security group
+resource "aws_security_group" "db_security_group" {
+  vpc_id      = aws_vpc.main[0].id
+  name        = "database security group"
+  description = "Allow access to RDS from the application security group"
+
+  ingress {
+    from_port       = var.db_port
+    to_port         = var.db_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.application_sec_group.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "database security group"
+  }
+}

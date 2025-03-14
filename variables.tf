@@ -42,7 +42,52 @@ variable "app_port" {
   default     = 8080
 }
 
+variable "db_port" {
+  type = number
+}
 
+variable "db_family" {
+  type = string
+}
+
+variable "db_name" {
+  type = string
+
+}
+
+variable "db_user" {
+  type = string
+}
+
+variable "db_password" {
+  type = string
+
+}
+
+variable "db_host" {
+  type = string
+
+}
+
+variable "instance_class" {
+  type = string
+}
+
+variable "engine" {
+  type = string
+}
+
+variable "engine_version" {
+  type = string
+}
+
+variable "storage_type" {
+  type = string
+}
+variable "identifier" {
+  description = "RDS instance identifier"
+  type        = string
+}
 
 
 variable "public_subnets" {
