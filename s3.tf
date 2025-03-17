@@ -103,7 +103,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "private_bucket_lifecycle" {
       storage_class = "STANDARD_IA"
     }
 
-    
+
   }
 
 }
