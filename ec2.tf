@@ -2,6 +2,7 @@ resource "aws_instance" "web_app_instance" {
   ami                    = var.custom_ami_id
   instance_type          = var.instance_type
   key_name               = var.key_pair_name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_instance_profile.name
   subnet_id              = aws_subnet.public[0].id
   vpc_security_group_ids = [aws_security_group.application_sec_group.id]
 
@@ -14,21 +15,41 @@ resource "aws_instance" "web_app_instance" {
 
   depends_on = [aws_db_instance.csye6225_rds_instance]
 
-  user_data = <<-EOT
- #!/bin/bash
- rm -f /opt/webapp/.env
- touch /opt/webapp/.env
- sudo echo "DATABASE=${var.db_name}" | sudo tee -a /opt/webapp/.env
-sudo echo "HOST=${aws_db_instance.csye6225_rds_instance.endpoint}" | sudo tee -a /opt/webapp/.env
-sudo echo "PASSWORD=${var.db_password}" | sudo tee -a /opt/webapp/.env
-sudo echo "USER=${var.db_user}" | sudo tee -a /opt/webapp/.env
-sudo echo "PORT=${var.app_port}" | sudo tee -a /opt/webapp/.env
-sudo echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" | sudo tee -a /opt/webapp/.env
-sudo echo "AWS_REGION=${var.aws_region}" | sudo tee -a /opt/webapp/.env
+  user_data = <<-EOF
+#!/bin/bash
+set -e  # Stop script execution on error
+
+# Wait to ensure EC2 instance has fully started
+sleep 30
+
+# Define environment file path
+ENV_FILE="/opt/webapp/.env"
+
+# Ensure the directory exists
+sudo mkdir -p /opt/webapp
+
+# Remove existing .env file (if any) and create a new one
+sudo rm -f $ENV_FILE
+sudo touch $ENV_FILE
+sudo chmod 777 $ENV_FILE  
+
+# Write environment variables
+echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
+echo "DB_HOST=${var.db_host}" | sudo tee -a $ENV_FILE
+echo "DB_PASSWORD=${var.db_password}" | sudo tee -a $ENV_FILE
+echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
+echo "DB_PORT=${var.db_port}" | sudo tee -a $ENV_FILE
+echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" | sudo tee -a $ENV_FILE
+echo "AWS_REGION=${var.aws_region}" | sudo tee -a $ENV_FILE
+
+# Ensure correct file permissions
+sudo chmod 644 $ENV_FILE
+
+# Restart the application service
+sudo systemctl daemon-reload
 sudo systemctl restart csye6225-aws.service
 
-
-EOT
+EOF
 
 
   disable_api_termination = false

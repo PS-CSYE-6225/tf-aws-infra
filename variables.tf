@@ -63,15 +63,14 @@ variable "db_password" {
   type = string
 
 }
-
-variable "db_host" {
-  type = string
-
-}
-
 variable "instance_class" {
   type = string
 }
+
+variable "db_host" {
+  type = string
+}
+
 
 variable "engine" {
   type = string
