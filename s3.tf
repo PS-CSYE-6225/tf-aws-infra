@@ -76,6 +76,12 @@ resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   policy_arn = aws_iam_policy.s3_bucket_policy.arn
 }
 
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "ec2-instance-profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+
 resource "aws_s3_bucket_public_access_block" "s3_private_bucket" {
   bucket                  = aws_s3_bucket.s3_bucket.id
   block_public_acls       = true
@@ -96,5 +102,8 @@ resource "aws_s3_bucket_lifecycle_configuration" "private_bucket_lifecycle" {
       days          = 30
       storage_class = "STANDARD_IA"
     }
+
+
   }
+
 }
