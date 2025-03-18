@@ -13,9 +13,9 @@ resource "aws_instance" "web_app_instance" {
     delete_on_termination = true
   }
 
-  depends_on = [aws_db_instance.csye6225_rds_instance]
+depends_on = [aws_db_instance.csye6225_rds_instance]
 
-  user_data = <<-EOF
+user_data = <<-EOF
 #!/bin/bash
 set -e  # Stop script execution on error
 
@@ -31,7 +31,7 @@ sudo mkdir -p /opt/webapp
 # Remove existing .env file (if any) and create a new one
 sudo rm -f $ENV_FILE
 sudo touch $ENV_FILE
-sudo chmod 777 $ENV_FILE  
+sudo chmod 644 $ENV_FILE
 
 # Write environment variables
 echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
@@ -41,9 +41,6 @@ echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
 echo "DB_PORT=${var.db_port}" | sudo tee -a $ENV_FILE
 echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" | sudo tee -a $ENV_FILE
 echo "AWS_REGION=${var.aws_region}" | sudo tee -a $ENV_FILE
-
-# Ensure correct file permissions
-sudo chmod 644 $ENV_FILE
 
 # Restart the application service
 sudo systemctl daemon-reload
