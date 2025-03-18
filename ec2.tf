@@ -13,9 +13,9 @@ resource "aws_instance" "web_app_instance" {
     delete_on_termination = true
   }
 
-depends_on = [aws_db_instance.csye6225_rds_instance]
+  depends_on = [aws_db_instance.csye6225_rds_instance]
 
-user_data = <<-EOF
+  user_data = <<-EOF
 #!/bin/bash
 set -e  # Stop script execution on error
 
