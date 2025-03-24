@@ -41,10 +41,10 @@ echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
 echo "DB_PORT=${var.db_port}" | sudo tee -a $ENV_FILE
 echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" | sudo tee -a $ENV_FILE
 echo "AWS_REGION=${var.aws_region}" | sudo tee -a $ENV_FILE
-
-# Restart the application service
-sudo systemctl daemon-reload
 sudo systemctl restart csye6225-aws.service
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
+sudo npm install -g statsd-cloudwatch-backend
+statsd /opt/webapp/statsd_config.js
 
 EOF
 

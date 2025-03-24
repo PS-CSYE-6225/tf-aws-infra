@@ -49,7 +49,8 @@ resource "aws_iam_policy" "s3_bucket_policy" {
           "s3:DeleteObject",
           "s3:ListBucket",
           "s3:PutBucketEncryption",
-          "s3:PutLifecycleConfiguration"
+          "s3:PutLifecycleConfiguration",
+
         ],
         "Resource" : [
           "arn:aws:s3:::${aws_s3_bucket.s3_bucket.id}",
@@ -70,10 +71,40 @@ resource "aws_iam_policy" "s3_bucket_policy" {
 
 
 
+
 # Attach the policy to the role
 resource "aws_iam_role_policy_attachment" "s3_policy_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.s3_bucket_policy.arn
+}
+
+resource "aws_iam_policy" "cloudwatch_agent_policy" {
+  name        = "CloudWatchAgentPolicy"
+  description = "Allows CloudWatch agent to publish metrics and logs and describe EC2 tags"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "cloudwatch:PutMetricData",
+          "ec2:DescribeTags",
+          "cloudwatch:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+}
+
+# Attach policy to IAM Role
+resource "aws_iam_role_policy_attachment" "attach_cloudwatch_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.cloudwatch_agent_policy.arn
 }
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
