@@ -5,8 +5,7 @@ variable "aws_region" {
 
 variable "aws_profile" {
   description = "AWS CLI profile name"
-  default     = "dev"
-  //default     = "demo"
+
 }
 
 variable "custom_ami_id" {
@@ -24,8 +23,7 @@ variable "instance_type" {
 variable "key_pair_name" {
   description = "AWS Key Pair Name for SSH access"
   type        = string
-  default     = "terraform-key"
-  //default="terraform-key-demo"
+
 
 }
 

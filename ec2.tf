@@ -31,11 +31,11 @@ sudo mkdir -p /opt/webapp
 # Remove existing .env file (if any) and create a new one
 sudo rm -f $ENV_FILE
 sudo touch $ENV_FILE
-sudo chmod 644 $ENV_FILE
+sudo chmod 666 $ENV_FILE
 
 # Write environment variables
 echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
-echo "DB_HOST=${var.db_host}" | sudo tee -a $ENV_FILE
+echo "DB_HOST=$(echo ${aws_db_instance.csye6225_rds_instance.address} | cut -d':' -f1)" | sudo tee -a $ENV_FILE
 echo "DB_PASSWORD=${var.db_password}" | sudo tee -a $ENV_FILE
 echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
 echo "DB_PORT=${var.db_port}" | sudo tee -a $ENV_FILE
