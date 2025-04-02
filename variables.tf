@@ -86,6 +86,26 @@ variable "identifier" {
   type        = string
 }
 
+variable "route53_zone_id" {
+  description = "Zone ID for route 53"
+}
+
+variable "domain_name" {
+  description = "Domain name"
+}
+
+variable "dev_subdomain" {
+  description = "dev Domain name"
+}
+
+variable "demo_subdomain" {
+  description = "Demo Domain name"
+}
+
+variable "subdomain" {
+  type    = list(string)
+  default = ["dev", "demo"]
+}
 
 variable "public_subnets" {
   description = "List of public subnet CIDR blocks for the first VPC"

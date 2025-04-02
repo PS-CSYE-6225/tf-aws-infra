@@ -1,4 +1,4 @@
-resource "aws_instance" "web_app_instance" {
+/*resource "aws_instance" "web_app_instance" {
   ami                    = var.custom_ami_id
   instance_type          = var.instance_type
   key_name               = var.key_pair_name
@@ -34,7 +34,7 @@ sudo touch $ENV_FILE
 sudo chmod 666 $ENV_FILE
 
 # Write environment variables
-echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
+eecho "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
 echo "DB_HOST=$(echo ${aws_db_instance.csye6225_rds_instance.address} | cut -d':' -f1)" | sudo tee -a $ENV_FILE
 echo "DB_PASSWORD=${var.db_password}" | sudo tee -a $ENV_FILE
 echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
@@ -45,6 +45,7 @@ sudo systemctl restart csye6225-aws.service
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
 sudo npm install -g statsd-cloudwatch-backend
 statsd /opt/webapp/statsd_config.js
+sudo systemctl restart webapp.service
 
 EOF
 
@@ -55,3 +56,4 @@ EOF
     Name = "web-app-instance"
   }
 }
+*/
