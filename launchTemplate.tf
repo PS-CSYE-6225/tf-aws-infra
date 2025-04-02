@@ -1,21 +1,16 @@
-/*resource "aws_instance" "web_app_instance" {
-  ami                    = var.custom_ami_id
-  instance_type          = var.instance_type
-  key_name               = var.key_pair_name
-  iam_instance_profile   = aws_iam_instance_profile.ec2_instance_profile.name
-  subnet_id              = aws_subnet.public[0].id
-  vpc_security_group_ids = [aws_security_group.application_sec_group.id]
-
-  # Root Volume (EBS)
-  root_block_device {
-    volume_size           = 25
-    volume_type           = "gp2"
-    delete_on_termination = true
+# Launch Template for Auto Scaling Group
+resource "aws_launch_template" "app_launch_template" {
+  depends_on = [
+    aws_security_group.application_sec_group
+  ]
+  name          = "csye6225_launch_template"
+  image_id      = var.custom_ami_id
+  instance_type = var.instance_type
+  key_name      = var.key_pair_name
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2_instance_profile.name
   }
-
-  depends_on = [aws_db_instance.csye6225_rds_instance]
-
-  user_data = <<-EOF
+  user_data = base64encode(<<-EOF
 #!/bin/bash
 set -e  # Stop script execution on error
 
@@ -31,10 +26,10 @@ sudo mkdir -p /opt/webapp
 # Remove existing .env file (if any) and create a new one
 sudo rm -f $ENV_FILE
 sudo touch $ENV_FILE
-sudo chmod 666 $ENV_FILE
+sudo chmod 644 $ENV_FILE
 
 # Write environment variables
-eecho "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
+echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
 echo "DB_HOST=$(echo ${aws_db_instance.csye6225_rds_instance.address} | cut -d':' -f1)" | sudo tee -a $ENV_FILE
 echo "DB_PASSWORD=${var.db_password}" | sudo tee -a $ENV_FILE
 echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
@@ -45,15 +40,23 @@ sudo systemctl restart csye6225-aws.service
 /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
 sudo npm install -g statsd-cloudwatch-backend
 statsd /opt/webapp/statsd_config.js
-sudo systemctl restart webapp.service
-
 EOF
+  )
 
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups             = [aws_security_group.application_sec_group.id]
+  }
 
-  disable_api_termination = false
+  # Block device mapping with KMS encryption
+  block_device_mappings {
+    device_name = "/dev/sda1"
 
-  tags = {
-    Name = "web-app-instance"
+    ebs {
+      volume_size = 25
+      volume_type = "gp2"
+      encrypted   = true
+    }
   }
 }
-*/
+
