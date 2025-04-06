@@ -109,32 +109,32 @@ resource "aws_kms_key" "rds_key" {
         "Action" : "kms:*",
         "Resource" : "*"
       },
-           {
-          "Sid" : "Allow access for Key Administrators",
-          "Effect" : "Allow",
-          "Principal" : {
-            "AWS" : "arn:aws:iam::${var.account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"
-          },
-          "Action" : [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:TagResource",
-            "kms:UntagResource",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:GenerateDataKey*"
-          ],
-          "Resource" : "*"
-        }
-        ,
+      {
+        "Sid" : "Allow access for Key Administrators",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${var.account_id}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"
+        },
+        "Action" : [
+          "kms:Create*",
+          "kms:Describe*",
+          "kms:Enable*",
+          "kms:List*",
+          "kms:Put*",
+          "kms:Update*",
+          "kms:Revoke*",
+          "kms:Disable*",
+          "kms:Get*",
+          "kms:Delete*",
+          "kms:TagResource",
+          "kms:UntagResource",
+          "kms:ScheduleKeyDeletion",
+          "kms:CancelKeyDeletion",
+          "kms:GenerateDataKey*"
+        ],
+        "Resource" : "*"
+      }
+      ,
       {
         "Sid" : "AllowRDSServicePrincipalAccess",
         "Effect" : "Allow",
