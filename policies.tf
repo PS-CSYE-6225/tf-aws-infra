@@ -50,3 +50,29 @@ resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   }
   alarm_actions = [aws_autoscaling_policy.scale_down_policy.arn]
 }
+
+resource "aws_iam_policy" "secretsmanager_access_policy" {
+  name        = "${var.network_name}-secretsmanager-policy"
+  description = "Allow EC2 instances to retrieve secrets from Secrets Manager"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource = [
+          aws_secretsmanager_secret.db_password_secret.arn
+        ]
+      }
+    ]
+  })
+}
+
+# Attach Secrets Manager Policy to EC2 Role
+resource "aws_iam_role_policy_attachment" "attach_secretsmanager_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.secretsmanager_access_policy.arn
+}
