@@ -31,7 +31,7 @@ sudo chmod 644 $ENV_FILE
 # Write environment variables
 echo "DB_NAME=${var.db_name}" | sudo tee -a $ENV_FILE
 echo "DB_HOST=$(echo ${aws_db_instance.csye6225_rds_instance.address} | cut -d':' -f1)" | sudo tee -a $ENV_FILE
-echo "DB_PASSWORD=${var.db_password}" | sudo tee -a $ENV_FILE
+echo "DB_PASSWORD=${local.db_password}" | sudo tee -a $ENV_FILE
 echo "DB_USER=${var.db_user}" | sudo tee -a $ENV_FILE
 echo "DB_PORT=${var.db_port}" | sudo tee -a $ENV_FILE
 echo "S3_BUCKET_NAME=${aws_s3_bucket.s3_bucket.id}" | sudo tee -a $ENV_FILE
@@ -56,7 +56,19 @@ EOF
       volume_size = 25
       volume_type = "gp2"
       encrypted   = true
+      kms_key_id  = aws_kms_key.ebs.arn
     }
   }
+}
+
+data "aws_secretsmanager_secret_version" "db_password_secret_version" {
+  depends_on = [
+    aws_secretsmanager_secret_version.db_password_secret_version
+  ]
+  secret_id = aws_secretsmanager_secret.db_password_secret.id
+}
+
+locals {
+  db_password = jsondecode(data.aws_secretsmanager_secret_version.db_password_secret_version.secret_string)["password"]
 }
 

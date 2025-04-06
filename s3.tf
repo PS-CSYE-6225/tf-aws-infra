@@ -4,8 +4,10 @@ resource "random_uuid" "bucket_name" {}
 # S3 Bucket with UUID as name
 resource "aws_s3_bucket" "s3_bucket" {
   bucket        = random_uuid.bucket_name.result # Assign the UUID as bucket name
-  force_destroy = true                           # Ensures Terraform can delete bucket even if not empty
-}
+  force_destroy = true
+} # Ensures Terraform can delete bucket even if not empty
+
+
 
 # Enable Default Encryption for S3 Bucket
 resource "aws_s3_bucket_server_side_encryption_configuration" "s3_encryption" {
@@ -13,7 +15,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3_encryption" {
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
+      kms_master_key_id = aws_kms_key.s3_kms.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }

@@ -81,6 +81,14 @@ variable "engine_version" {
 variable "storage_type" {
   type = string
 }
+
+variable "account_id" {
+  type = string
+}
+
+variable "cli_user" {
+  type = string
+}
 variable "identifier" {
   description = "RDS instance identifier"
   type        = string
