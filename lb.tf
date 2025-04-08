@@ -14,8 +14,10 @@ resource "aws_lb" "app_lb" {
 # Listener for Load Balancer
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.app_lb.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.aws_profile == "dev" ? var.dev_certificate_arn : var.demo_certificate_arn
 
 
   default_action {
@@ -23,6 +25,7 @@ resource "aws_lb_listener" "http_listener" {
     target_group_arn = aws_lb_target_group.app_target_group.arn
   }
 }
+
 
 # Target Group for Auto Scaling Group
 resource "aws_lb_target_group" "app_target_group" {

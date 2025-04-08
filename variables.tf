@@ -110,6 +110,16 @@ variable "demo_subdomain" {
   description = "Demo Domain name"
 }
 
+variable "dev_certificate_arn" {
+  description = "ACM Certificate ARN for the dev environment"
+  type        = string
+}
+
+variable "demo_certificate_arn" {
+  description = "ACM Certificate ARN for the demo environment"
+  type        = string
+}
+
 variable "subdomain" {
   type    = list(string)
   default = ["dev", "demo"]
@@ -129,6 +139,7 @@ variable "second_vpc_cidr" {
   description = "CIDR block for the second VPC"
   type        = string
 }
+
 
 variable "second_public_subnets" {
   description = "List of public subnet CIDR blocks for the second VPC"
@@ -150,6 +161,7 @@ variable "vpc_count" {
   type        = number
   default     = 1
 }
+
 
 /*variable "aws_accounts" {
   description = "List of AWS accounts to deploy resources"
