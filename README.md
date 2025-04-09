@@ -131,23 +131,15 @@ Edit
 aws configure --profile demo
 Then, import the certificate:
 
-bash
-Copy
-Edit
 aws acm import-certificate \
   --certificate fileb://certificate.crt \
   --private-key fileb://private.key \
   --certificate-chain fileb://ca_bundle.crt \
   --region us-east-1 \
   --profile demo
-🔎 Get Certificate ARN
-bash
-Copy
-Edit
+Get Certificate ARN
+
 aws acm list-certificates --profile demo
 Copy the correct ARN and paste it into your terraform.tfvars:
 
-hcl
-Copy
-Edit
 demo_certificate_arn = "arn:aws:acm:us-east-1:xxxxxxxxxxxx:certificate/xyz-5678-
